@@ -154,7 +154,7 @@ export default class PDFDocument {
    * Create a new [[PDFDocument]].
    * @returns Resolves with the newly created document.
    */
-  static async create(options: CreateOptions = {}) {
+  static create(options: CreateOptions = {}) {
     const { updateMetadata = true } = options;
 
     const context = PDFContext.create();
@@ -935,10 +935,10 @@ export default class PDFDocument {
    * @param options The options to be used when embedding the font.
    * @returns Resolves with the embedded font.
    */
-  async embedFont(
+   embedFont(
     font: StandardFonts | string | Uint8Array | ArrayBuffer,
     options: EmbedFontOptions = {},
-  ): Promise<PDFFont> {
+  ): PDFFont {
     const { subset = false, customName, features } = options;
 
     assertIs(font, 'font', ['string', Uint8Array, ArrayBuffer]);
@@ -951,14 +951,9 @@ export default class PDFDocument {
       const bytes = toUint8Array(font);
       const fontkit = this.assertFontkit();
       embedder = subset
-        ? await CustomFontSubsetEmbedder.for(
-            fontkit,
-            bytes,
-            customName,
-            features,
-          )
-        : await CustomFontEmbedder.for(fontkit, bytes, customName, features);
-    } else {
+      ? CustomFontSubsetEmbedder.for(fontkit, bytes, customName, features)
+      : CustomFontEmbedder.for(fontkit, bytes, customName, features);
+  } else {
       throw new TypeError(
         '`font` must be one of `StandardFonts | string | Uint8Array | ArrayBuffer`',
       );

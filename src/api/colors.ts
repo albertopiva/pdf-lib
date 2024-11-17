@@ -42,9 +42,9 @@ export const grayscale = (gray: number): Grayscale => {
 };
 
 export const rgb = (red: number, green: number, blue: number): RGB => {
-  assertRange(red, 'red', 0, 1);
-  assertRange(green, 'green', 0, 1);
-  assertRange(blue, 'blue', 0, 1);
+  assertRange(red, 'red', 0, 255);
+  assertRange(green, 'green', 0, 255);
+  assertRange(blue, 'blue', 0, 255);
   return { type: ColorTypes.RGB, red, green, blue };
 };
 
